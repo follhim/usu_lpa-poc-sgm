@@ -1,0 +1,8 @@
+*.RdataTmp
+*.Rhistory
+.Rproj.user/
+.Rproj.user
+/.quarto/
+Analysis_files/figure-commonmark/
+.Ruserdata
+README.qmd
