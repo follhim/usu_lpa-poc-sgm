@@ -2,14 +2,14 @@
 
 # Engagement with Religious/Spirituality among Sexual Gender Minorities of Color
 
-The current repository is hosted on both (OSF)\[add link\] and
-(Github)\[add link\]. Data for the present study is acccessible via
-(OSF)\[https://osf.io/g6aj4/\].
+The current repository is hosted on both [OSF](add%20link) and
+[Github](add%20link). Data for the present study is acccessible via a
+different [OSF](https://osf.io/g6aj4/) repository.
 
 > [!WARNING]
 >
-> Notice an error or have a question? Please open an (issue)\[add
-> link\].
+> Notice an error or have a question? Please open an
+> [issue](https://github.com/follhim/usu_lpa-poc-sgm/issues).
 
 ## Directory
 
