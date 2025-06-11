@@ -1,0 +1,102 @@
+---
+title: "Patterns of Religious/Spiritual Engagement Among Sexual and Gender Minorities of Color"
+short-title: "R/S Engagement Among SGMs of Color"
+author: "Seungju Kim"
+institute: "University of Illinois"
+short-institute: "UIUC"
+department: "Department of Psychology"
+acknowledgment: "This material is based upon work supported by the National Science Foundation Graduate Research Fellowship Program under Grant No. DGE 21-46756. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation."
+format:
+  beamer:
+    template: template.tex
+    outertheme: miniframes
+    aspectratio: 169
+    section-titles: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r include=FALSE}
+pacman::p_load(here, tidyverse)
+```
+
+# Background {.unlisted .unnumbered}
+
+## Health Disparities in SGMs 
+
+## Religiousness/Spirituality and SGM Health
+
+# Present Study {.unlisted .unnumbered}
+
+## Participants and Procedure
+Hello 
+
+## Measures
+
+## Analysis Plan
+
+# Results {.unlisted .unnumbered}
+
+## Latent Profile Analysis
+
+```{r echo=FALSE}
+#| fig-width: 20
+#| fig-height: 9
+#| out-width: "200%"
+#| out-height: "85%"
+#| fig-align: "center"
+lpa_plot <- readRDS(file = here("analysis", "figures", "lpa_plot.Rds"))
+
+line_data <- ggplot_build(lpa_plot)$data[[2]]
+
+line_styles <- line_data %>%
+  group_by(group) %>%
+  summarize(
+    color = first(colour),
+    linetype = first(linetype)
+  )
+
+p <- lpa_plot
+for (i in seq_len(nrow(line_styles))) {
+  g <- line_styles$group[i]
+  p <- p + geom_line(
+    data = filter(line_data, group == g),
+    aes(x = x, y = y, group = group),
+    color = line_styles$color[i],
+    linetype = line_styles$linetype[i],
+    linewidth = 5,
+    show.legend = FALSE,
+    inherit.aes = FALSE
+  )
+}
+
+p +
+  theme(
+    # Make all text larger
+    text = element_text(size = 18),           # Base text size
+    axis.title = element_text(size = 30),     # Axis titles
+    axis.text = element_text(size = 26),      # Axis labels
+    legend.title = element_text(size = 28),   # Legend title
+    legend.text = element_text(size = 26),    # Legend text
+    plot.title = element_text(size = 22)) +    # Plot title (if you have one)
+  guides(
+    colour = guide_legend(override.aes = list(linewidth = 5, size = 4)),
+    linetype = guide_legend(override.aes = list(linewidth = 5, size = 4)),
+    shape = guide_legend(override.aes = list(linewidth = 5, size = 4))
+  )
+```
+
+
+## Demographic Predictors
+
+## Outcomes Pt. 1
+
+## Outcomes Pt. 2
+
+# Implications {.unlisted .unnumbered}
+
+## R/S matter to SGMs
+
+## R/S engagement is linked to health and identity development
+
+## Future directions

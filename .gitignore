@@ -4,6 +4,7 @@
 *.Rhistory
 .Rproj.user/
 .Rproj.user
+/analysis/archives
 /.quarto/
 Analysis_files/figure-commonmark/
 .Ruserdata
