@@ -281,7 +281,7 @@ $if(safe-columns)$
 \def\endcols{\end{columns}}
 $endif$
 
-% Custom title page template: icons below affiliation, above acknowledgment
+% Custom title page template: icons below affiliation, acknowledgment moved slightly further up and left-aligned
 $if(acknowledgment)$
 \defbeamertemplate{title page}{custom}[1][]
 {
@@ -310,18 +310,18 @@ $if(acknowledgment)$
       \hspace{1.5em}
       \includegraphics[height=1.5em]{academicons--osf-square.pdf}
     \end{beamercolorbox}
+    % --- ACKNOWLEDGMENT MOVED UP SLIGHTLY MORE AND LEFT ALIGNED ---
+    \vspace{0.1em} % Change from 1em to 0.1em for an even slighter upward move
+    \begin{beamercolorbox}[sep=4pt,left,#1]{acknowledgment}
+      \raggedright
+      \scriptsize $acknowledgment$
+    \end{beamercolorbox}
     % --------------------------------
     \begin{beamercolorbox}[sep=8pt,center,#1]{date}
       \usebeamerfont{date}\insertdate
     \end{beamercolorbox}
   \endgroup
   \vfill
-  \begin{beamercolorbox}[wd=\paperwidth,ht=0.8cm,left]{footline}
-    \hspace{0.5cm}
-    \parbox{0.9\paperwidth}{
-      \tiny $acknowledgment$
-    }
-  \end{beamercolorbox}
 }
 \setbeamertemplate{title page}[custom]
 $endif$

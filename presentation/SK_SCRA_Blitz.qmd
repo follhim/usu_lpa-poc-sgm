@@ -18,22 +18,103 @@ editor_options:
 
 ```{r include=FALSE}
 pacman::p_load(here, tidyverse)
+lpa_data <- readRDS(here("data", "lpa_data.Rds"))
 ```
 
 # Background {.unlisted .unnumbered}
 
-## Health Disparities in SGMs 
+## Health Disparities in SGMs
+Depression
+
+-    Lesbian/Gay individuals have 1.87 higher odds (Wittgens et al., 2022)
+-    Bisexual individuals have 2.70 higher odds (Wittgens et al., 2022) 
+-    TGD individuals have apprx. 30% higher rate (Liu et al., 2024)
+
+Alcohol Use Disorder
+
+-    Lesbian/Gay individuals have 1.68 higher odds (Wittgens et al., 2022)
+-    Bisexual individuals have 1.50 higher odds (Wittgens et al., 2022)
+
+Suicide
+
+-    Lesbian/Gay individuals have 2.89 higher odds (Wittgens et al., 2022)
+-    Bisexual individuals have 4.81 higher odds (Wittgens et al., 2022)
+-    TGD individuals large diff. (d = 0.84-1.10) (Valen et al., 2025)
 
 ## Religiousness/Spirituality and SGM Health
 
+Religiousness can contribute to SGM health disparities
+
+-    anti-LGBT+ state legislation (Todd et al., 2024)
+-    Religiously-based family expectations (Kim et al., 2024)
+-    Internal conflict (Gibbs & Goldbach, 2015)
+
+## Do SGMs care about religion?
+Yes! 
+
+48% of SGMs identify as religious (Public Religion Research Institute, 2024) and highly value religion (Conron et al., 2020).
+
+## How and when does R/S contribute to SGM well-being?
+
+Emerging work suggests, there is large heterogeneity in how R/S is associated with SGM health. 
+
+R/S can contribute to disparities AND wellbeing. 
+
+## Existing studies
+
+Prior studies focus on:
+
+1.   Mostly White SGMs
+2.   LDS or Christian only samples
+
 # Present Study {.unlisted .unnumbered}
 
-## Participants and Procedure
-Hello 
+## Participants and Procedure (N=401)
+```{r echo=FALSE}
+#| fig-width: 30
+#| fig-height: 13
+dem_plot <- readRDS(file = here("analysis", "figures", "dem_plot.Rds"))
+dem_plot +
+  theme_minimal(base_size = 20)
+```
 
-## Measures
+## Measures Pt. 1
+
+Behavioral Measures of R/S
+
+-    Service Attendance (i.e., not including funerals)
+-    Spiritual Activity (i.e., prayer, scripture, meditation)
+
+Psychological Measure of Religiousness
+
+-    Religious Commitment (i.e., intrinsic religious commitment)
+
+Social Measure of Religiousness
+
+-    Sense of Belonging with Religious Community
+
+## Measures Pt. 2
+Mental Health
+
+-    PHQ-9
+
+LGBTQ+ Measures
+
+-    Internalized Homonegativity
+-    LGBTQ+ Community Connectedness
+
+Religious Outcome Measures
+
+-    Religious and Sexual/Gender Identity Conflict
+-    Interpersonal Religious Struggles
 
 ## Analysis Plan
+
+All analyses were performed in R and viewable on Github and OSF. 
+
+-    Latent profile analysis `tidySEM` package
+-    Multinomial logistic regression using profile probabilities
+-    BCH distal outcome
 
 # Results {.unlisted .unnumbered}
 
@@ -86,17 +167,152 @@ p +
   )
 ```
 
+## Demographic Predictors: Gender Identity
 
-## Demographic Predictors
+```{r gend identity}
+#| fig-width: 22
+#| fig-height: 9
+gen_lpa_plot <- readRDS(file = here("analysis", "figures", "gender_lpa_plot.Rds"))
+gen_lpa_plot
+```
 
-## Outcomes Pt. 1
+## Demographic Predictors: Sexual Identity
+```{r warning=FALSE}
+#| fig-width: 22
+#| fig-height: 9
+readRDS(file = here("analysis", "figures", "sexid_lpa_plot.Rds"))
+```
 
-## Outcomes Pt. 2
+## Demographic Predictors: Racial/Ethnic Identity
+```{r warning=FALSE}
+#| fig-width: 22
+#| fig-height: 9
+readRDS(file = here("analysis", "figures", "racem_lpa_plot.Rds"))
+```
+
+## Outcome: Depression
+```{r}
+#| fig-width: 22
+#| fig-height: 9
+lpa_data %>%
+  ggplot(aes(x = class, y = dep)) +
+  stat_summary(fun = mean, geom = "col", fill = "steelblue", alpha = 1) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2, size = 1) +
+  labs(
+       x = "Class", 
+       y = "Depression Score (Mean ± SE)") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 12),
+    strip.text = element_text(size = 12)  # for facet labels if needed
+  )
+```
+
+## Outcome: Internalized Homonegativity
+```{r}
+#| fig-width: 22
+#| fig-height: 9
+lpa_data %>%
+  ggplot(aes(x = class, y = ih)) +
+  stat_summary(fun = mean, geom = "col", fill = "steelblue", alpha = 1) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2, size = 1) +
+  labs(
+       x = "Class", 
+       y = "Internalized Homonegativity Score (Mean ± SE)") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 12),
+    strip.text = element_text(size = 12)  # for facet labels if needed
+  )
+```
+
+## Outcome: LGBT Community Connectedness
+```{r}
+#| fig-width: 22
+#| fig-height: 9
+lpa_data %>%
+  ggplot(aes(x = class, y = lgbtconnect)) +
+  stat_summary(fun = mean, geom = "col", fill = "steelblue", alpha = 1) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2, size = 1) +
+  labs(
+       x = "Class", 
+       y = "LGBT Connectedness Score (Mean ± SE)") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 12),
+    strip.text = element_text(size = 12)  # for facet labels if needed
+  )
+```
+
+## Outcome: RS/SGI Conflict
+```{r}
+#| fig-width: 22
+#| fig-height: 9
+lpa_data %>%
+  ggplot(aes(x = class, y = degreeofconflict)) +
+  stat_summary(fun = mean, geom = "col", fill = "steelblue", alpha = 1) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2, size = 1) +
+  labs(
+       x = "Class", 
+       y = "Identity Conflict Score (Mean ± SE)") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 12),
+    strip.text = element_text(size = 12)  # for facet labels if needed
+  )
+```
+
+## Outcome: Interpersonal Religious Struggles
+```{r}
+#| fig-width: 22
+#| fig-height: 9
+lpa_data %>%
+  ggplot(aes(x = class, y = irs)) +
+  stat_summary(fun = mean, geom = "col", fill = "steelblue", alpha = 1) +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2, size = 1) +
+  labs(
+       x = "Class", 
+       y = "Interpersonal Religious Struggles Score (Mean ± SE)") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 16, face = "bold"),
+    axis.title = element_text(size = 14),
+    axis.text = element_text(size = 12),
+    strip.text = element_text(size = 12)  # for facet labels if needed
+  )
+```
+
 
 # Implications {.unlisted .unnumbered}
 
 ## R/S matter to SGMs
 
+-    Although most SGMs were NR/NS, a substantial majority are in some form.
+-    Regardless of R/S engagement, all report high levels of connectedness to LGBT Community
+
+### Key point
+This reflects the broader literature, 48% of SGMs are religious, and also highly value religion. **Religion matters to SGMs.**
+
 ## R/S engagement is linked to health and identity development
 
+-    R/S SGMs reported the lowest levels of depression
+-    NR/NS reported lowest levels of internalized stigma
+-    NR/NS reported lowest levels of internal conflict
+
+### Key points
+1.   R/S can promote health AND
+2.   R/S can promote stressors
+
 ## Future directions
+
+1.   Using psychometrically validated measures of religiousness and spirituality.
+2.   How and when does R/S promote health in SGMs?
+3.   Why do some racial/ethnic SGMs report higher R/S engagement than others?

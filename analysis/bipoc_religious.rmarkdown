@@ -15,9 +15,13 @@ execute:
   warning: false
 ---
 
+
+
 # Set Up
 
 ## Library and Processing Settings
+
+
 
 ```{r, output=FALSE, message = FALSE, warning = FALSE}
 # install.packages("pacman") # install if you don't have this package
@@ -28,14 +32,22 @@ plan(multisession)
 handlers("progress") 
 ```
 
+
+
 ## Import Data
+
+
 
 ```{r}
 org_data <- read_sav(here("data", "prri_final_shareable.sav"))
 data <- org_data
 ```
 
+
+
 ## Prepare Data
+
+
 
 ```{r}
 names(data) <- tolower(names(data))
@@ -79,7 +91,11 @@ data$sex <- ifelse(data$sex == 1, 0, 1)
 data$religious <- ifelse(data$religiousaffiliation %in% c(1:8, 12, 13, 14), 2, 1)
 ```
 
+
+
 ## Preprocess for LPA
+
+
 
 ```{r}
 lpa_data <- subset(data, select = c("relcom", 
@@ -100,7 +116,11 @@ data <- data[-141, ]
 # This case caused issues and would not allow the model to run for some reason EVEN though TidySEM handles missing data with FIML.
 ```
 
+
+
 ## Descriptives
+
+
 
 ```{r}
 descriptives(lpa_data) %>%
@@ -143,7 +163,11 @@ dem_table <- gtsummary::tbl_summary(
 dem_table
 ```
 
+
+
 ### Demo Figure
+
+
 ```{r}
 library(dplyr)
 library(ggplot2)
@@ -190,7 +214,11 @@ saveRDS(dem_fig, file = here("analysis", "figures", "dem_plot.Rds"))
 
 
 
+
+
 ## Run LPA
+
+
 
 ```{r}
 set.seed(123)
@@ -198,6 +226,8 @@ set.seed(123)
 # saveRDS(lpa1, here("analysis", "model_objects", "lpa1_0424a_poc.RData"))
 lpa1 <- readRDS(here("analysis", "model_objects", "lpa1_0424a_poc.RData"))
 ```
+
+
 
 ::: callout-note
 Missing data was automatically handled using the Full-Information Maximum Likelihood (FIML) estimator.
@@ -208,6 +238,8 @@ We have previously run the analyses and will only present them from previous loa
 :::
 
 ## Fit Indices
+
+
 
 ```{r}
 fit <- table_fit(lpa1)
@@ -223,7 +255,11 @@ fit %>%
 plot(fit)
 ```
 
+
+
 ## LRT
+
+
 
 ```{r}
 # lrt_lpa <- lr_lmr(lpa1)
@@ -232,7 +268,11 @@ plot(fit)
 # lrt_lpa
 ```
 
+
+
 ## BLRT
+
+
 
 ```{r}
 # lpa1_blrt <- BLRT(lpa1, replications = 1000)
@@ -241,7 +281,11 @@ plot(fit)
 # lpa1_blrt
 ```
 
+
+
 ## Plots of Profiles
+
+
 
 ```{r, include=FALSE}
 lpa1_plot <- plot_profiles(
@@ -259,6 +303,8 @@ lpa1_plot <- plot_profiles(
 lpa1_plot
 ```
 
+
+
 ::: callout-note
 In contrast to the previous models, this model usese FIML which allows for high quality results (i.e. greater Entropy across the board). Evidence points to many things, so this one leans more upon rationale. Pretty much each class solution has good separation (Entropy \>.90).
 
@@ -266,6 +312,8 @@ Results suggest Class 5 is the best fit.
 :::
 
 ## LPA 5-Class Solution Data
+
+
 
 ```{r}
 lpa1_solution <- lpa1[[4]]
@@ -277,7 +325,11 @@ lpa1_data <- rename(lpa1_data,
                     "class" = "predicted_class") # NEW = OLD
 ```
 
+
+
 ## Plot
+
+
 
 ```{r, include=FALSE}
 lpa1_plot <- plot_profiles(
@@ -339,7 +391,11 @@ saveRDS(lpa_fig, file = here("analysis", "figures", "lpa_plot.Rds"))
 ```
 
 
+
+
 ## Demographics
+
+
 
 ```{r}
 selected_vars <- c("sex", "gender", "age", "education", "racem", "income", "sexualidentity", "urbanicity", "class")
@@ -378,18 +434,11 @@ dem_table
 #   gt::gtsave(filename = here("0225_Analysis", "lpa_dem_table.docx"))
 ```
 
-```{r}
-lpa1_data <- lpa1_data %>%
-  mutate(class = case_when(
-    class == 1 ~ "NR/NS",
-    class == 2 ~ "R/NS",
-    class == 3 ~ "NR/S",
-    class == 4 ~ "R/S"
-  ))
-```
 
 
 ## Predictors
+
+
 ```{r}
 calculate_pairwise_ors <- function(pseudo_class_obj, predictor_name) {
   # Extract results from the pseudo-class object
@@ -474,11 +523,13 @@ calculate_pairwise_ors <- function(pseudo_class_obj, predictor_name) {
 ```
 
 
+
+
 ### Age
 
+
+
 ```{r, output=FALSE, message = FALSE, warning = FALSE}
-#| height: 9
-#| width: 16
 age_log <- tidySEM::pseudo_class(
   x = lpa1_solution, 
   model = function(data) {
@@ -494,83 +545,6 @@ ors_age <- calculate_pairwise_ors(age_log, "age")
 # Print results
 ors_age$vs_reference
 
-
-ggplot(lpa1_data, aes(class, fill = as_factor(racem))) +
-         geom_bar() +
-  labs(fill = "Race/Ethnicity") +
-  theme(
-    legend.position = "bottom",
-    legend.direction = "vertical",
-    legend.title.align = 0.5  # optional: centers the legend title
-  ) +  
-ggplot(lpa1_data, aes(class, fill = as_factor(sexualidentity))) +
-         geom_bar() + 
-  labs(fill = "Sexual Identity") +
-  theme(
-    legend.position = "bottom",
-    legend.direction = "vertical",
-    legend.title.align = 0.5  # optional: centers the legend title
-  )
-```
-
-### Figures for Predictors
-#### Gender Identity
-```{r}
-gender_lpa_plot <- ggplot(lpa1_data, aes(class, fill = haven::as_factor(gender))) +
-  geom_bar() +
-  geom_text(aes(label = haven::as_factor(gender)), 
-            stat = "count",
-            position = position_stack(vjust = 0.5),
-            color = "white",
-            fontface = "bold",
-            size = 6) +
-  labs(title = "Gender Identity") + 
-  guides(fill = "none") +  # removes the fill legend
-  theme(
-    legend.position = "none"  # additional insurance to remove legend
-  )
-
-saveRDS(gender_lpa_plot, file = here("analysis", "figures", "gender_lpa_plot.Rds"))
-```
-
-#### Race
-```{r}
-racem_lpa_plot <- ggplot(lpa1_data, aes(class, fill = haven::as_factor(racem))) +
-  geom_bar() +
-  geom_text(aes(label = haven::as_factor(racem)), 
-            stat = "count",
-            position = position_stack(vjust = 0.5),
-            color = "white",
-            fontface = "bold",
-            size = 6) +
-  labs(title = "Racial/Ethnic Identity") + 
-  guides(fill = "none") +  # removes the fill legend
-  theme(
-    legend.position = "none"  # additional insurance to remove legend
-  )
-
-saveRDS(racem_lpa_plot, file = here("analysis", "figures", "racem_lpa_plot.Rds"))
-```
-
-### Sexual Orientation
-```{r}
-sexid_lpa_plot <- ggplot(lpa1_data, aes(class, fill = haven::as_factor(sexualidentity))) +
-  geom_bar() +
-  geom_text(aes(label = haven::as_factor(sexualidentity)), 
-            stat = "count",
-            position = position_stack(vjust = 0.5),
-            color = "white",
-            fontface = "bold",
-            size = 6) +
-  labs(title = "Sexual Identity") + 
-  guides(fill = "none") +  # removes the fill legend
-  theme(
-    legend.position = "none"  # additional insurance to remove legend
-  )
-
-saveRDS(sexid_lpa_plot, file = here("analysis", "figures", "sexid_lpa_plot.Rds"))
-
-saveRDS(lpa1_data, file = here("data", "lpa_data.Rds"))
 ```
 
 ```{r}
@@ -579,7 +553,11 @@ age_log %>%
   gt::gt()
 ```
 
+
+
 ### Residence
+
+
 
 ```{r, output=FALSE, message = FALSE, warning = FALSE}
 city_log <- tidySEM::pseudo_class(
@@ -599,7 +577,11 @@ city_log %>%
   gt::gt()
 ```
 
+
+
 ### Sex
+
+
 
 ```{r, output=FALSE, message = FALSE, warning = FALSE}
 sex_log <- tidySEM::pseudo_class(
@@ -619,9 +601,13 @@ sex_log %>%
   gt::gt()
 ```
 
+
+
 ### Race
 
 #### Asian
+
+
 
 ```{r, output=FALSE, message = FALSE, warning = FALSE}
 asian_log <- tidySEM::pseudo_class(
@@ -642,7 +628,11 @@ asian_log %>%
   gt::gt()
 ```
 
+
+
 #### Latine
+
+
 
 ```{r, output=FALSE, message = FALSE, warning = FALSE}
 latine_log <- tidySEM::pseudo_class(
@@ -663,7 +653,11 @@ latine_log %>%
   gt::gt()
 ```
 
+
+
 #### Black
+
+
 
 ```{r, output=FALSE, message = FALSE, warning = FALSE}
 black_log <- tidySEM::pseudo_class(
@@ -684,7 +678,11 @@ black_log %>%
   gt::gt()
 ```
 
+
+
 #### Multiracial
+
+
 
 ```{r, output=FALSE, message = FALSE, warning = FALSE}
 mult_log <- tidySEM::pseudo_class(
@@ -705,7 +703,11 @@ mult_log %>%
   gt::gt()
 ```
 
+
+
 ### Gender Identity
+
+
 
 ```{r, output=FALSE, message = FALSE, warning = FALSE}
 tnb_log <- tidySEM::pseudo_class(
@@ -725,7 +727,11 @@ tnb_log %>%
   gt::gt()
 ```
 
+
+
 ### Sexual Orientation
+
+
 
 ```{r, output=FALSE, message = FALSE, warning = FALSE}
 plur_log <- tidySEM::pseudo_class(
@@ -745,7 +751,11 @@ plur_log %>%
   gt::gt()
 ```
 
+
+
 ### Identity Conflict
+
+
 ```{r}
 lpa1_data$degreeofconflict <- as.numeric(lpa1_data$degreeofconflict)
 doc_log <- tidySEM::pseudo_class(
@@ -765,7 +775,11 @@ ors_doc$vs_reference
 ```
 
 
+
+
 ### Interpersonal Struggles
+
+
 ```{r}
 irs_log <- tidySEM::pseudo_class(
   x = lpa1_solution, 
@@ -784,11 +798,15 @@ irs_doc$vs_reference
 ```
 
 
+
+
 ## BCH/Outcomes
 
 The recommended method of handling distal outcomes with LPA.
 
 ### Demographics
+
+
 
 ```{r}
 selected_vars <- c("dep", "ih", "lgbtconnect", "relconnect", "degreeofconflict", "irs", "class")
@@ -838,35 +856,55 @@ dem2_table <- gtsummary::tbl_summary(
 dem2_table
 ```
 
+
+
 ### Depression
+
+
 
 ```{r}
 BCH(lpa1_solution, data = lpa1_data$dep) %>%
   lr_test()
 ```
 
+
+
 ### Internalized Homonegativity
+
+
 
 ```{r}
 BCH(lpa1_solution, data = lpa1_data$ih) %>%
   lr_test()
 ```
 
+
+
 ### LGBT Connectedness
+
+
 
 ```{r}
 BCH(lpa1_solution, data = lpa1_data$lgbtconnect) %>%
   lr_test()
 ```
 
+
+
 ### Rel Connectedness
+
+
 
 ```{r}
 BCH(lpa1_solution, data = lpa1_data$relconnect) %>%
   lr_test()
 ```
 
+
+
 ### Degree of Conflict
+
+
 
 ```{r}
 lpa1_data$degreeofconflict <- as.numeric(lpa1_data$degreeofconflict)
@@ -874,7 +912,11 @@ BCH(lpa1_solution, data = lpa1_data$degreeofconflict) %>%
   lr_test()
 ```
 
+
+
 ### Interpersonal Religious Struggles
+
+
 
 ```{r}
 BCH(lpa1_solution, data = lpa1_data$irs) %>%
@@ -895,3 +937,4 @@ BCH(lpa1_solution, data = lpa1_data$irs) %>%
 # # Get odds ratios for covariates
 # exp(coef(covariates_model))
 ```
+
