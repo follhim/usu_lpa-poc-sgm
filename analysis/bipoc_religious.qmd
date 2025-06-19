@@ -144,6 +144,7 @@ dem_table
 ```
 
 ### Demo Figure
+
 ```{r}
 library(dplyr)
 library(ggplot2)
@@ -187,8 +188,6 @@ dem_fig <- ggplot(plot_df, aes(x = variable, y = n, fill = factor(group_id))) +
 
 saveRDS(dem_fig, file = here("analysis", "figures", "dem_plot.Rds"))
 ```
-
-
 
 ## Run LPA
 
@@ -338,7 +337,6 @@ lpa_fig <- lpa1_plot +
 saveRDS(lpa_fig, file = here("analysis", "figures", "lpa_plot.Rds"))
 ```
 
-
 ## Demographics
 
 ```{r}
@@ -388,8 +386,8 @@ lpa1_data <- lpa1_data %>%
   ))
 ```
 
-
 ## Predictors
+
 ```{r}
 calculate_pairwise_ors <- function(pseudo_class_obj, predictor_name) {
   # Extract results from the pseudo-class object
@@ -473,7 +471,6 @@ calculate_pairwise_ors <- function(pseudo_class_obj, predictor_name) {
 
 ```
 
-
 ### Age
 
 ```{r, output=FALSE, message = FALSE, warning = FALSE}
@@ -514,7 +511,9 @@ ggplot(lpa1_data, aes(class, fill = as_factor(sexualidentity))) +
 ```
 
 ### Figures for Predictors
+
 #### Gender Identity
+
 ```{r}
 gender_lpa_plot <- ggplot(lpa1_data, aes(class, fill = haven::as_factor(gender))) +
   geom_bar() +
@@ -534,6 +533,7 @@ saveRDS(gender_lpa_plot, file = here("analysis", "figures", "gender_lpa_plot.Rds
 ```
 
 #### Race
+
 ```{r}
 racem_lpa_plot <- ggplot(lpa1_data, aes(class, fill = haven::as_factor(racem))) +
   geom_bar() +
@@ -553,6 +553,7 @@ saveRDS(racem_lpa_plot, file = here("analysis", "figures", "racem_lpa_plot.Rds")
 ```
 
 ### Sexual Orientation
+
 ```{r}
 sexid_lpa_plot <- ggplot(lpa1_data, aes(class, fill = haven::as_factor(sexualidentity))) +
   geom_bar() +
@@ -746,6 +747,7 @@ plur_log %>%
 ```
 
 ### Identity Conflict
+
 ```{r}
 lpa1_data$degreeofconflict <- as.numeric(lpa1_data$degreeofconflict)
 doc_log <- tidySEM::pseudo_class(
@@ -764,8 +766,8 @@ ors_doc <- calculate_pairwise_ors(doc_log, "degreeofconflict")
 ors_doc$vs_reference
 ```
 
-
 ### Interpersonal Struggles
+
 ```{r}
 irs_log <- tidySEM::pseudo_class(
   x = lpa1_solution, 
@@ -782,7 +784,6 @@ irs_doc <- calculate_pairwise_ors(irs_log, "irs")
 # Print results
 irs_doc$vs_reference
 ```
-
 
 ## BCH/Outcomes
 

@@ -5,7 +5,6 @@ author: "Seungju Kim"
 institute: "University of Illinois"
 short-institute: "UIUC"
 department: "Department of Psychology"
-acknowledgment: "This material is based upon work supported by the National Science Foundation Graduate Research Fellowship Program under Grant No. DGE 21-46756. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation."
 format:
   beamer:
     template: template.tex
@@ -21,55 +20,91 @@ pacman::p_load(here, tidyverse)
 lpa_data <- readRDS(here("data", "lpa_data.Rds"))
 ```
 
+## Disclosure
+
+![](USNSF_Logo_Lockup_stacked_RGB_1200ppi.png){width="272" fig-align="center"}
+
+This material is based upon work supported by the National Science Foundation Graduate Research Fellowship Program under Grant No. DGE 21-46756. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+
 # Background {.unlisted .unnumbered}
 
+## Overview
+
+1.   Why does religion/spirituality matter for SGMs?
+2.   Why focus on SGMs of Color?
+3.   How is R/S engagement connected to health? 
+
 ## Health Disparities in SGMs
-Depression
 
--    Lesbian/Gay individuals have 1.87 higher odds (Wittgens et al., 2022)
--    Bisexual individuals have 2.70 higher odds (Wittgens et al., 2022) 
--    TGD individuals have apprx. 30% higher rate (Liu et al., 2024)
+SGMs are at **1.50 to 4.81 higher odds** risk of experiencing:
 
-Alcohol Use Disorder
+-    internalized (e.g., depression, suicide ideation) and 
+-    externalized (e.g., alcohol misuse) psychopathological symptoms 
 
--    Lesbian/Gay individuals have 1.68 higher odds (Wittgens et al., 2022)
--    Bisexual individuals have 1.50 higher odds (Wittgens et al., 2022)
+(Liu et al., 2024; Wittgens et al., 2022; Valen et al., 2025)
 
-Suicide
-
--    Lesbian/Gay individuals have 2.89 higher odds (Wittgens et al., 2022)
--    Bisexual individuals have 4.81 higher odds (Wittgens et al., 2022)
--    TGD individuals large diff. (d = 0.84-1.10) (Valen et al., 2025)
-
-## Religiousness/Spirituality and SGM Health
-
+## What is driving SGM health disparities?
 Religiousness can contribute to SGM health disparities
 
--    anti-LGBT+ state legislation (Todd et al., 2024)
--    Religiously-based family expectations (Kim et al., 2024)
--    Internal conflict (Gibbs & Goldbach, 2015)
+### Recent studies
 
-## Do SGMs care about religion?
-Yes! 
+-   anti-LGBTQ+ religious expemption legislation (Todd et al., 2024)
+-   Religiously-based family expectations (Kim et al., 2024)
+-   Internal conflict (Gibbs & Goldbach, 2015)
 
-48% of SGMs identify as religious (Public Religion Research Institute, 2024) and highly value religion (Conron et al., 2020).
+## Religion is deeply connected to SGMs
 
-## How and when does R/S contribute to SGM well-being?
+**>78% of all SGMs are raised religions** (Lefevor et al., 2023)
 
-Emerging work suggests, there is large heterogeneity in how R/S is associated with SGM health. 
+**48% of all SGMs identify as religious** (Public Religion Research Institute, 2024) and highly value religion (Conron et al., 2020).
 
-R/S can contribute to disparities AND wellbeing. 
+### Key Point
+
+R/S matters to SGMs and their health.
+
+## So is Religiousness = Bad?
+
+**Not quite.**
+
+![](lefevor_et_al_2021.png){width="500" fig-align="center"}
+
+## Recap
+
+1.  SGMs have high health disparities
+2.  Religiousness contributes to health disparities
+3.  R/S and health relationship is complicated
+4.  R/S is important to SGMs
+
+### Key Question
+How do SGMs engage with R/S?
 
 ## Existing studies
 
 Prior studies focus on:
 
-1.   Mostly White SGMs
-2.   LDS or Christian only samples
+1.  Mostly White SGMs
+2.  LDS or Christian only samples
+
+### Key Gap
+Even though **SGMs of Color** are more religious than White SGMs.
+
+## Research Question
+
+1.  How do SGMs of Color engage with R/S?
+2.  Who is more likely to engage with R/S?
+3.  How is this connected to health and other outcomes?
 
 # Present Study {.unlisted .unnumbered}
 
+## Data and Open Materials
+
+-    Meets **Gold** Standard of Reproducibility (Heil et al., 2022)
+-    Data and materials are available on Github.
+-    Data is provided by the **Tyler Lefevor** and the **Public Religion Research Institute**.
+-    401 of 1,253 LGBTQ+ Americans identified as BIPOC in 2023.
+
 ## Participants and Procedure (N=401)
+
 ```{r echo=FALSE}
 #| fig-width: 30
 #| fig-height: 13
@@ -82,39 +117,38 @@ dem_plot +
 
 Behavioral Measures of R/S
 
--    Service Attendance (i.e., not including funerals)
--    Spiritual Activity (i.e., prayer, scripture, meditation)
+-   Service Attendance (i.e., not including funerals)
+-   Spiritual Activity (i.e., prayer, scripture, meditation)
 
 Psychological Measure of Religiousness
 
--    Religious Commitment (i.e., intrinsic religious commitment)
+-   Religious Commitment (i.e., intrinsic religious commitment)
 
 Social Measure of Religiousness
 
--    Sense of Belonging with Religious Community
+-   Sense of Belonging with Religious Community
 
 ## Measures Pt. 2
+
 Mental Health
 
--    PHQ-9
+-   PHQ-9
 
 LGBTQ+ Measures
 
--    Internalized Homonegativity
--    LGBTQ+ Community Connectedness
+-   Internalized Homonegativity
+-   LGBTQ+ Community Connectedness
 
 Religious Outcome Measures
 
--    Religious and Sexual/Gender Identity Conflict
--    Interpersonal Religious Struggles
+-   Religious and Sexual/Gender Internal Conflict
+-   Interpersonal Religious Struggles (i.e., felt hurt by R/S people)
 
 ## Analysis Plan
 
-All analyses were performed in R and viewable on Github and OSF. 
-
--    Latent profile analysis `tidySEM` package
--    Multinomial logistic regression using profile probabilities
--    BCH distal outcome
+-   Latent profile analysis `tidySEM` package
+-   Multinomial logistic regression using profile probabilities
+-   BCH distal outcome
 
 # Results {.unlisted .unnumbered}
 
@@ -177,6 +211,7 @@ gen_lpa_plot
 ```
 
 ## Demographic Predictors: Sexual Identity
+
 ```{r warning=FALSE}
 #| fig-width: 22
 #| fig-height: 9
@@ -184,6 +219,7 @@ readRDS(file = here("analysis", "figures", "sexid_lpa_plot.Rds"))
 ```
 
 ## Demographic Predictors: Racial/Ethnic Identity
+
 ```{r warning=FALSE}
 #| fig-width: 22
 #| fig-height: 9
@@ -191,6 +227,7 @@ readRDS(file = here("analysis", "figures", "racem_lpa_plot.Rds"))
 ```
 
 ## Outcome: Depression
+
 ```{r}
 #| fig-width: 22
 #| fig-height: 9
@@ -211,6 +248,7 @@ lpa_data %>%
 ```
 
 ## Outcome: Internalized Homonegativity
+
 ```{r}
 #| fig-width: 22
 #| fig-height: 9
@@ -231,6 +269,7 @@ lpa_data %>%
 ```
 
 ## Outcome: LGBT Community Connectedness
+
 ```{r}
 #| fig-width: 22
 #| fig-height: 9
@@ -251,6 +290,7 @@ lpa_data %>%
 ```
 
 ## Outcome: RS/SGI Conflict
+
 ```{r}
 #| fig-width: 22
 #| fig-height: 9
@@ -271,6 +311,7 @@ lpa_data %>%
 ```
 
 ## Outcome: Interpersonal Religious Struggles
+
 ```{r}
 #| fig-width: 22
 #| fig-height: 9
@@ -290,29 +331,30 @@ lpa_data %>%
   )
 ```
 
-
-# Implications {.unlisted .unnumbered}
+# Implications {.unnumbered}
 
 ## R/S matter to SGMs
 
--    Although most SGMs were NR/NS, a substantial majority are in some form.
--    Regardless of R/S engagement, all report high levels of connectedness to LGBT Community
+-   Although most SGMs were NR/NS, a substantial minority are in some form.
+-   Regardless of R/S engagement, all report high levels of connectedness to LGBT Community
 
 ### Key point
+
 This reflects the broader literature, 48% of SGMs are religious, and also highly value religion. **Religion matters to SGMs.**
 
 ## R/S engagement is linked to health and identity development
 
--    R/S SGMs reported the lowest levels of depression
--    NR/NS reported lowest levels of internalized stigma
--    NR/NS reported lowest levels of internal conflict
+-   R/S SGMs reported the lowest levels of depression
+-   NR/NS reported lowest levels of internalized stigma
+-   NR/NS reported lowest levels of internal conflict
 
 ### Key points
-1.   R/S can promote health AND
-2.   R/S can promote stressors
+
+1.  R/S can promote health AND
+2.  R/S can promote stressors
 
 ## Future directions
 
-1.   Using psychometrically validated measures of religiousness and spirituality.
-2.   How and when does R/S promote health in SGMs?
-3.   Why do some racial/ethnic SGMs report higher R/S engagement than others?
+1.  Using psychometrically validated measures of religiousness and spirituality.
+2.  What are the mediators driving these associations?
+3.  Why do some racial/ethnic SGMs report higher R/S engagement than others?
