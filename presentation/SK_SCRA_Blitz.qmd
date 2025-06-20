@@ -52,11 +52,17 @@ Religiousness can contribute to SGM health disparities
 -   Religiously-based family expectations (Kim et al., 2024)
 -   Internal conflict (Gibbs & Goldbach, 2015)
 
+## Take a guess
+
+\huge What % of SGMs are **raised religious**? 
+
+\huge What % of SGMs **identify as religious**?
+
 ## Religion is deeply connected to SGMs
 
-**>78% of all SGMs are raised religions** (Lefevor et al., 2023)
+\large >78% of all SGMs are raised religious (Lefevor et al., 2023)
 
-**48% of all SGMs identify as religious** (Public Religion Research Institute, 2024) and highly value religion (Conron et al., 2020).
+\large 48% of all SGMs identify as religious (Public Religion Research Institute, 2024) and highly value religion (Conron et al., 2020).
 
 ### Key Point
 
@@ -71,9 +77,8 @@ R/S matters to SGMs and their health.
 ## Recap
 
 1.  SGMs have high health disparities
-2.  Religiousness contributes to health disparities
-3.  R/S and health relationship is complicated
-4.  R/S is important to SGMs
+2.  Religiousness and health relationship is complicated
+3.  R/S is important to SGMs
 
 ### Key Question
 How do SGMs engage with R/S?
@@ -142,7 +147,6 @@ LGBTQ+ Measures
 Religious Outcome Measures
 
 -   Religious and Sexual/Gender Internal Conflict
--   Interpersonal Religious Struggles (i.e., felt hurt by R/S people)
 
 ## Analysis Plan
 
@@ -151,6 +155,55 @@ Religious Outcome Measures
 -   BCH distal outcome
 
 # Results {.unlisted .unnumbered}
+
+## Latent Profile Analysis
+
+```{r echo=FALSE}
+#| fig-width: 20
+#| fig-height: 9
+#| out-width: "200%"
+#| out-height: "85%"
+#| fig-align: "center"
+lpa_plot <- readRDS(file = here("analysis", "figures", "lpa_plot.Rds"))
+
+line_data <- ggplot_build(lpa_plot)$data[[2]]
+
+line_styles <- line_data %>%
+  group_by(group) %>%
+  summarize(
+    color = first(colour),
+    linetype = first(linetype)
+  )
+
+p <- lpa_plot
+for (i in seq_len(nrow(line_styles))) {
+  g <- line_styles$group[i]
+  p <- p + geom_line(
+    data = filter(line_data, group == g),
+    aes(x = x, y = y, group = group),
+    color = line_styles$color[i],
+    linetype = line_styles$linetype[i],
+    linewidth = 5,
+    show.legend = FALSE,
+    inherit.aes = FALSE
+  )
+}
+
+p +
+  theme(
+    # Make all text larger
+    text = element_text(size = 18),           # Base text size
+    axis.title = element_text(size = 30),     # Axis titles
+    axis.text = element_text(size = 26),      # Axis labels
+    legend.title = element_text(size = 28),   # Legend title
+    legend.text = element_text(size = 26),    # Legend text
+    plot.title = element_text(size = 22)) +    # Plot title (if you have one)
+  guides(
+    colour = guide_legend(override.aes = list(linewidth = 5, size = 4)),
+    linetype = guide_legend(override.aes = list(linewidth = 5, size = 4)),
+    shape = guide_legend(override.aes = list(linewidth = 5, size = 4))
+  )
+```
 
 ## Latent Profile Analysis
 
@@ -301,27 +354,6 @@ lpa_data %>%
   labs(
        x = "Class", 
        y = "Identity Conflict Score (Mean ± SE)") +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 16, face = "bold"),
-    axis.title = element_text(size = 14),
-    axis.text = element_text(size = 12),
-    strip.text = element_text(size = 12)  # for facet labels if needed
-  )
-```
-
-## Outcome: Interpersonal Religious Struggles
-
-```{r}
-#| fig-width: 22
-#| fig-height: 9
-lpa_data %>%
-  ggplot(aes(x = class, y = irs)) +
-  stat_summary(fun = mean, geom = "col", fill = "steelblue", alpha = 1) +
-  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2, size = 1) +
-  labs(
-       x = "Class", 
-       y = "Interpersonal Religious Struggles Score (Mean ± SE)") +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 16, face = "bold"),
